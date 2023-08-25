@@ -1,0 +1,21 @@
+{
+  "island-menu.menu.join": "Join MCC Island!",
+  "text.autoconfig.island-menu.option.devOptions": "Developer Settings",
+  "text.autoconfig.island-menu.option.devOptions.apiUrl": "MCC API Base URL",
+  "text.autoconfig.island-menu.option.joinButtonOptions": "Join Button Settings",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerAddressOverride": "Join Button Server Address",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerNameOverride": "Join Button Server Name",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerNameOverride.@Tooltip": "Mainly used by mods such as ReplayMod to track what server you were on.",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonTextOverride": "Join Button Text",
+  "text.autoconfig.island-menu.option.joinButtonOptions.overrideJoinButton": "Override Join MCCi Button?",
+  "text.autoconfig.island-menu.option.splashOptions": "Splash Message Settings",
+  "text.autoconfig.island-menu.option.splashOptions.overrideSplash": "Override Splash Text?",
+  "text.autoconfig.island-menu.option.splashOptions.overrideSplashText": "Splash Message",
+  "text.autoconfig.island-menu.option.supportingTeam": "Team to support",
+  "text.autoconfig.island-menu.option.supportingTeam.@Tooltip": "Show your support for a team in the title screen's splash text, chooses the specified team instead of randomly picking a team when required.",
+  "text.autoconfig.island-menu.option.themeOptions": "Theme Settings",
+  "text.autoconfig.island-menu.option.themeOptions.overrideTheme": "Override Menu Theme?",
+  "text.autoconfig.island-menu.option.themeOptions.overrideTheme.@Tooltip": "Theme will update on next game launch.",
+  "text.autoconfig.island-menu.option.themeOptions.theme": "Theme",
+  "text.autoconfig.island-menu.title": "Island Menu Settings"
+}

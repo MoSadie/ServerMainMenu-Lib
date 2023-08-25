@@ -1,0 +1,21 @@
+{
+  "island-menu.menu.join": "Csatlakozz az MCC Islandre!",
+  "text.autoconfig.island-menu.option.devOptions": "Fejlesztői Beállítások",
+  "text.autoconfig.island-menu.option.devOptions.apiUrl": "MCC API Bázis URL-cím",
+  "text.autoconfig.island-menu.option.joinButtonOptions": "Csatlakozás Gomb Beállításai",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerAddressOverride": "Csatlakozás Gomb Szerver Címe",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerNameOverride": "Csatlakozás Gomb Szerver Neve",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonServerNameOverride.@Tooltip": "Főleg az olyan modok használják, mint a ReplayMod, hogy nyomon kövessék, melyik szerveren voltál fent.",
+  "text.autoconfig.island-menu.option.joinButtonOptions.buttonTextOverride": "Csatlakozás Gomb Szövege",
+  "text.autoconfig.island-menu.option.joinButtonOptions.overrideJoinButton": "MCCi Csatlakozás Gomb Felülírása?",
+  "text.autoconfig.island-menu.option.splashOptions": "Felugró Üzenetek Beállításai",
+  "text.autoconfig.island-menu.option.splashOptions.overrideSplash": "Felugró Üzenetek Felülírása?",
+  "text.autoconfig.island-menu.option.splashOptions.overrideSplashText": "Felugró Üzenetek",
+  "text.autoconfig.island-menu.option.supportingTeam": "Támogatni kívánt csapat",
+  "text.autoconfig.island-menu.option.supportingTeam.@Tooltip": "Mutassa ki egy csapat iránti elkötelezettségét a kezdőképernyőn egy felugró üzenetben, a megadott csapatot választja ki, ahelyett, hogy véletlenszerűen választana egy csapatot, amikor szükséges.",
+  "text.autoconfig.island-menu.option.themeOptions": "Téma Beállítások",
+  "text.autoconfig.island-menu.option.themeOptions.overrideTheme": "Főmenü Téma Felülírása?",
+  "text.autoconfig.island-menu.option.themeOptions.overrideTheme.@Tooltip": "A téma a következő játék indításakor frissül.",
+  "text.autoconfig.island-menu.option.themeOptions.theme": "Téma",
+  "text.autoconfig.island-menu.title": "Island Menu Beállítások"
+}
