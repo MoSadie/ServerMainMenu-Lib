@@ -8,11 +8,11 @@ To get started using the library, check out the [Getting Started Guide](https://
 
 ### Themed Splash Text
 
-Multiple ways to add Spash Text that is automatically loaded on the main menu!
+Create your own splash text! Make it say whatever you want!
 
 ### Multiple Panoramas
 
-Supports adding one or more panoramas to the main menu. You can even configure time-based events to select a panorama.
+Supports adding one or more panoramas to the main menu. There are pre-made options for determining which theme is used, or bring your own logic!
 
 ### Quick-join button
 
@@ -20,7 +20,7 @@ One-click button to automatically connect to a specified server.
 
 ### Client Configuration
 
-Multiple configurations on the client side to customize the main menu.
+Multiple options on the client side to customize the main menu and override theme settings.
 
 
 ## Known Mod Compatibility:
