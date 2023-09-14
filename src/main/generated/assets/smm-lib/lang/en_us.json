@@ -1,0 +1,18 @@
+{
+  "text.autoconfig.smm-lib.option.joinButtonOptions": "Join Button Settings",
+  "text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerAddressOverride": "Join Button Server Address",
+  "text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerNameOverride": "Join Button Server Name",
+  "text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerNameOverride.@Tooltip": "Mainly used by mods such as ReplayMod to track what server you were on.",
+  "text.autoconfig.smm-lib.option.joinButtonOptions.buttonTextOverride": "Join Button Text",
+  "text.autoconfig.smm-lib.option.joinButtonOptions.overrideJoinButton": "Override Join Server Button?",
+  "text.autoconfig.smm-lib.option.splashOptions": "Splash Message Settings",
+  "text.autoconfig.smm-lib.option.splashOptions.overrideSplash": "Override Splash Text?",
+  "text.autoconfig.smm-lib.option.splashOptions.overrideSplashText": "Splash Message",
+  "text.autoconfig.smm-lib.option.themeOptions": "Theme Settings",
+  "text.autoconfig.smm-lib.option.themeOptions.overrideTheme": "Override Menu Theme?",
+  "text.autoconfig.smm-lib.option.themeOptions.overrideTheme.@Tooltip": "Theme will update on next game launch.",
+  "text.autoconfig.smm-lib.option.themeOptions.themeId": "Theme ID",
+  "text.autoconfig.smm-lib.option.themeOptions.themeNamespace": "Theme Namespace",
+  "text.autoconfig.smm-lib.title": "SimpleMainMenu Lib Settings",
+  "text.ssmlib.normaltheme.joinserver": "Join the server!"
+}

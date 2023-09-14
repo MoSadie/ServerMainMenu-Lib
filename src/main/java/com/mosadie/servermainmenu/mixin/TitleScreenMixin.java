@@ -1,6 +1,6 @@
 package com.mosadie.servermainmenu.mixin;
 
-import com.mosadie.servermainmenu.client.IslandMenuClient;
+import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
 import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.minecraft.client.MinecraftClient;
@@ -18,7 +18,6 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +34,7 @@ public abstract class TitleScreenMixin extends Screen {
     @Shadow @Nullable private SplashTextRenderer splashText;
 
     @Final @Mutable
-    @Shadow @Nullable public static CubeMapRenderer PANORAMA_CUBE_MAP = new CubeMapRenderer(new Identifier(IslandMenuClient.MOD_ID, "textures/gui/title/background/" + IslandMenuClient.getTheme().getPath() + "/panorama"));
+    @Shadow @Nullable public static CubeMapRenderer PANORAMA_CUBE_MAP = new CubeMapRenderer(ServerMainMenuLibClient.getTheme().getPanorama());
 
     @Shadow @Nullable private RealmsNotificationsScreen realmsNotificationGui;
 
@@ -56,7 +55,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Inject(method = "init()V", at = @At("HEAD"))
     private void injectSplashText(CallbackInfo info) {
-        this.splashText = new SplashTextRenderer(IslandMenuClient.getSplashText());
+        this.splashText = new SplashTextRenderer(ServerMainMenuLibClient.getSplashText());
     }
 
     @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;initWidgetsNormal(II)V"))
@@ -74,20 +73,19 @@ public abstract class TitleScreenMixin extends Screen {
 
         Tooltip tooltip = Tooltip.of(disabledText);
 
-        ButtonWidget.Builder joinIslandButtonWidgetBuilder = ButtonWidget.builder(IslandMenuClient.getButtonText(), (button) -> {
-            ServerAddress serverAddress = ServerAddress.parse(IslandMenuClient.getButtonServerAddress());
-            ServerInfo serverInfo = new ServerInfo(IslandMenuClient.getButtonServerName(), serverAddress.getAddress(), false);
+        ButtonWidget.Builder joinServerButtonWidgetBuilder = ButtonWidget.builder(ServerMainMenuLibClient.getButtonText(), (button) -> {
+            ServerInfo serverInfo = ServerMainMenuLibClient.getButtonServerInfo();
             serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
-            ConnectScreen.connect(self, MinecraftClient.getInstance(), serverAddress, serverInfo, false);
+            ConnectScreen.connect(self, MinecraftClient.getInstance(), ServerAddress.parse(serverInfo.address), serverInfo, false);
         }).position(self.width / 2 - 100, y + spacingY).size(200, 20);
 
         if (isDisabled) {
-            joinIslandButtonWidgetBuilder.tooltip(tooltip);
+            joinServerButtonWidgetBuilder.tooltip(tooltip);
         }
 
-        ButtonWidget joinIslandButtonWidget = joinIslandButtonWidgetBuilder.build();
-        joinIslandButtonWidget.active = !isDisabled;
-        this.addDrawableChild(joinIslandButtonWidgetBuilder.build());
+        ButtonWidget joinServerButtonWidget = joinServerButtonWidgetBuilder.build();
+        joinServerButtonWidget.active = !isDisabled;
+        this.addDrawableChild(joinServerButtonWidgetBuilder.build());
 
         ButtonWidget.Builder multiplayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
             Screen screen = MinecraftClient.getInstance().options.skipMultiplayerWarning ? new MultiplayerScreen(self) : new MultiplayerWarningScreen(self);

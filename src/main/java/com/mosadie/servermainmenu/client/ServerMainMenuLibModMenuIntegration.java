@@ -4,9 +4,9 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
 
-public class IslandMenuModMenuIntegration implements ModMenuApi {
+public class ServerMainMenuLibModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> AutoConfig.getConfigScreen(IslandMenuConfig.class, parent).get();
+        return parent -> AutoConfig.getConfigScreen(ServerMainMenuLibConfig.class, parent).get();
     }
 }

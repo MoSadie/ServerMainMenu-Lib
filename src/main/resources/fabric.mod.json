@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "servermainmenu-lib",
+  "id": "smm-lib",
   "version": "${version}",
   "name": "ServerMainMenu Lib",
   "description": "Library mod to customize the main menu.",
@@ -13,17 +13,17 @@
     "issues": "https://github.com/MoSadie/ServerMainMenu-Lib/issues"
   },
   "license": "LGPL-3.0",
-  "icon": "assets/island-menu/icon.png",
+  "icon": "assets/smm-lib/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.mosadie.servermainmenu.client.IslandMenuClient"
+      "com.mosadie.servermainmenu.client.ServerMainMenuLibClient"
     ],
     "fabric-datagen": [
       "com.mosadie.servermainmenu.client.data.ServerMainMenuLibDataGen"
     ],
     "modmenu": [
-      "com.mosadie.servermainmenu.client.IslandMenuModMenuIntegration"
+      "com.mosadie.servermainmenu.client.ServerMainMenuLibModMenuIntegration"
     ]
   },
   "mixins": [

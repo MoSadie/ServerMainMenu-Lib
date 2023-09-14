@@ -7,7 +7,6 @@ public class ServerMainMenuLibDataGen implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-        pack.addProvider(IslandMenuEnLangProvider::new);
-        pack.addProvider(IslandMenuHuLangProvider::new);
+        pack.addProvider(ServerMainMenuLibEnLangProvider::new);
     }
 }

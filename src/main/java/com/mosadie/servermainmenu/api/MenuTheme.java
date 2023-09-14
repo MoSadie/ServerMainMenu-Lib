@@ -11,4 +11,8 @@ public interface MenuTheme {
     String getSplashText();
     Text getJoinServerButtonText();
     ServerInfo getServerInfo();
+
+    boolean rollOdds();
+
+    int getPriority();
 }

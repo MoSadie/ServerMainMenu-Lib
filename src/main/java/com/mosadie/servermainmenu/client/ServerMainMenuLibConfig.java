@@ -1,15 +1,12 @@
 package com.mosadie.servermainmenu.client;
 
-import com.mosadie.servermainmenu.mccapi.Teams;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = IslandMenuClient.MOD_ID)
-public class IslandMenuConfig implements ConfigData {
+@Config(name = ServerMainMenuLibClient.MOD_ID)
+public class ServerMainMenuLibConfig implements ConfigData {
 
-    @ConfigEntry.Gui.Tooltip
-    Teams supportingTeam = Teams.NONE;
     @ConfigEntry.Gui.CollapsibleObject
     JoinButtonOptions joinButtonOptions = new JoinButtonOptions();
 
@@ -19,29 +16,24 @@ public class IslandMenuConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     SplashOptions splashOptions = new SplashOptions();
 
-    @ConfigEntry.Gui.CollapsibleObject
-    DeveloperOptions devOptions = new DeveloperOptions();
 
     static class JoinButtonOptions {
         boolean overrideJoinButton = false;
-        String buttonTextOverride = "Join MCC Island!";
+        String buttonTextOverride = "Join the server!";
         @ConfigEntry.Gui.Tooltip
-        String buttonServerNameOverride = "MCC Island!";
-        String buttonServerAddressOverride = "play.mccisland.net";
+        String buttonServerNameOverride = "Server Name";
+        String buttonServerAddressOverride = "localhost";
     }
 
     static class ThemeOptions {
         @ConfigEntry.Gui.Tooltip()
         boolean overrideTheme = false;
-        MenuThemeOld theme = MenuThemeOld.NORMAL;
+        String themeNamespace = "ssmlib";
+        String themeId = "normal";
     }
 
     static class SplashOptions {
         boolean overrideSplash = false;
-        String overrideSplashText = "Set Sail Today!";
-    }
-
-    static class DeveloperOptions {
-        String apiUrl = "https://api.mcchampionship.com";
+        String overrideSplashText = "Splash!";
     }
 }
