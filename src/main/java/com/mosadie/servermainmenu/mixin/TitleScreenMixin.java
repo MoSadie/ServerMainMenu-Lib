@@ -59,6 +59,16 @@ public abstract class TitleScreenMixin extends Screen {
     private void redirectInitWidgetsNormal(TitleScreen self, int y, int spacingY) {
         int buttonYMulti = 0;
 
+        int buttonCount = 0;
+
+        if (ServerMainMenuLibClient.isSingleplayerVisible()) buttonCount++;
+        if (ServerMainMenuLibClient.isMultiplayerVisible()) buttonCount++;
+        if (ServerMainMenuLibClient.isQuickJoinVisible()) buttonCount++;
+
+        if (buttonCount == 1) {
+            buttonYMulti = 1;
+        }
+
         if (ServerMainMenuLibClient.isSingleplayerVisible()) {
             ButtonWidget.Builder singlePlayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button -> {
                         MinecraftClient.getInstance().setScreen(new SelectWorldScreen((self)));
