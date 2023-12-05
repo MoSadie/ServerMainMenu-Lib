@@ -25,23 +25,48 @@ public class NormalTheme implements MenuTheme{
     }
 
     @Override
-    public Text getJoinServerButtonText() {
+    public Text getQuickJoinButtonText() {
         // Use Text.translatable for translatable text, or Text.literal to statically define text.
-        return Text.translatable("text.ssmlib.normaltheme.joinserver");
+        return Text.translatable("text.smmlib.normaltheme.joinserver");
     }
 
     @Override
-    public ServerInfo getServerInfo() {
-        // Remember the server name is used for mods such as minimaps and Replay Mod for data storage,
-        // so it *may* be shown to the player and *should* be constant!
-        return new ServerInfo("Localhost", "localhost", false);
+    public void onQuickJoinClicked() {
+        // For this example we join the server "localhost" on click.
+        // To load a world, see Util.loadWorld
+
+        Util.joinServer("Localhost", "localhost");
+    }
+
+    @Override
+    public boolean isSingleplayerVisible() {
+        // Determines the visibility of the "Singleplayer" button on the Title Screen.
+        return true;
+    }
+
+    @Override
+    public boolean isMultiplayerVisible() {
+        // Determines the visibility of the "Multiplayer" button on the Title Screen.
+        return true;
+    }
+
+    @Override
+    public boolean isQuickJoinVisible() {
+        // Determines the visibility of the Quick Join button on the Title Screen.
+        return true;
+    }
+
+    @Override
+    public boolean isModsVisible() {
+        // Determines the visibility of the "Mods" button on the Title Screen.
+        return true;
     }
 
     @Override
     public boolean rollOdds() {
         // This method is used to determine if this theme should be shown,
         // an example of this being able to show a holiday theme as a holiday approaches
-        // for a low-code example, you can just call any of the methods starting with "rollOdds" in my Util class.
+        // for a low-code example, you can just call any of the methods starting with "rollOdds" in the Util class.
 
         // Normal Theme always fail the odds roll. Your theme should not always return false. (Otherwise it won't get picked!)
         return false;

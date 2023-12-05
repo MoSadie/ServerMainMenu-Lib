@@ -1,5 +1,15 @@
 package com.mosadie.servermainmenu.api;
 
+import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.MessageScreen;
+import net.minecraft.client.gui.screen.NoticeScreen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 
 import java.time.LocalDate;
@@ -58,5 +68,69 @@ public class Util {
         Random random = Random.create();
 
         return random.nextBoolean();
+    }
+
+    /**
+     * Connect to the specified server, defaulting the server name to the server address.
+     * @param address The address of the server
+     */
+    public static void joinServer(String address) {
+        joinServer(address, address);
+    }
+
+    /**
+     * Connect to the specified server.
+     * @param name Name of the server, used for mod data storage
+     * @param address Address of the server
+     */
+    public static void joinServer(String name, String address) {
+        if (ServerAddress.isValid(address)) {
+            ServerInfo serverInfo = new ServerInfo(name, address, ServerInfo.ServerType.OTHER);
+            serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
+            joinServer(serverInfo);
+        }
+    }
+
+    /**
+     * Directs Minecraft to connect to the specified server.
+     * @param server The ServerInfo of the server to join.
+     */
+    public static void joinServer(ServerInfo server) {
+        MinecraftClient.getInstance().send(() -> {
+            leaveIfNeeded();
+
+            ServerMainMenuLibClient.LOGGER.info("Connecting to " + server.address);
+
+            // Connect to server
+
+            ConnectScreen.connect(new TitleScreen(), MinecraftClient.getInstance(), ServerAddress.parse(server.address), server, false);
+        });
+    }
+
+    public static void loadWorld(String worldName) {
+        MinecraftClient.getInstance().send(() -> {
+            if (MinecraftClient.getInstance().getLevelStorage().levelExists(worldName)) {
+                leaveIfNeeded();
+
+                ServerMainMenuLibClient.LOGGER.info("Loading world...");
+                MinecraftClient.getInstance().createIntegratedServerLoader().start(new TitleScreen(), worldName);
+            } else {
+                ServerMainMenuLibClient.LOGGER.warn("World " + worldName + " does not exist!");
+                if (MinecraftClient.getInstance().world == null)
+                    MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> MinecraftClient.getInstance().setScreen(new TitleScreen()), Text.translatable("text.smm-lib.error.worldnotfound.title"), Text.translatable("text.smm-lib.error.worldnotfound.body", worldName), ScreenTexts.TO_TITLE, true));
+            }
+        });
+    }
+
+    /**
+     * Checks if in a world and leaves it.
+     */
+    private static void leaveIfNeeded() {
+        if (MinecraftClient.getInstance().world != null) {
+            ServerMainMenuLibClient.LOGGER.info("Disconnecting from world...");
+
+            MinecraftClient.getInstance().world.disconnect();
+            MinecraftClient.getInstance().disconnect();
+        }
     }
 }

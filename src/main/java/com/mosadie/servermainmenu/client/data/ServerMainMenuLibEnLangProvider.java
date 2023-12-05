@@ -10,17 +10,25 @@ public class ServerMainMenuLibEnLangProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        translationBuilder.add("text.ssmlib.normaltheme.joinserver", "Join the server!");
+        translationBuilder.add("text.smmlib.normaltheme.joinserver", "Join the server!");
 
         translationBuilder.add("text.autoconfig.smm-lib.title", "ServerMainMenu Lib Settings");
 
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions", "Join Button Settings");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions", "Quick Join Button Settings");
 
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions.overrideJoinButton", "Override Join Server Button?");
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions.buttonTextOverride", "Join Button Text");
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerNameOverride", "Join Button Server Name");
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerNameOverride.@Tooltip", "Mainly used by mods such as ReplayMod to track what server you were on.");
-        translationBuilder.add("text.autoconfig.smm-lib.option.joinButtonOptions.buttonServerAddressOverride", "Join Button Server Address");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.overrideQuickJoinButton", "Override Quick Join Button?");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonTextOverride", "Button Text");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonNameOverride", "Button Server Name");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonNameOverride.@Tooltip", "Mainly used by mods such as ReplayMod to track what server you were on. Unused in World mode.");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonDestinationOverride", "Server Address / World Folder");
+        translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonType", "Destination Type");
+
+        translationBuilder.add("text.autoconfig.smm-lib.option.visibilityOptions", "Visibility Options");
+
+        translationBuilder.add("text.autoconfig.smm-lib.option.visibilityOptions.singleplayer", "Show Singleplayer Button");
+        translationBuilder.add("text.autoconfig.smm-lib.option.visibilityOptions.multiplayer", "Show Multiplayer Button");
+        translationBuilder.add("text.autoconfig.smm-lib.option.visibilityOptions.mods", "Show Mods Button");
+        translationBuilder.add("text.autoconfig.smm-lib.option.visibilityOptions.quickJoin", "Show Quick Join Button");
 
         translationBuilder.add("text.autoconfig.smm-lib.option.themeOptions", "Theme Settings");
 
@@ -33,6 +41,9 @@ public class ServerMainMenuLibEnLangProvider extends FabricLanguageProvider {
 
         translationBuilder.add("text.autoconfig.smm-lib.option.splashOptions.overrideSplash", "Override Splash Text?");
         translationBuilder.add("text.autoconfig.smm-lib.option.splashOptions.overrideSplashText", "Splash Message");
+
+        translationBuilder.add("text.smm-lib.error.worldnotfound.title", "World not found!");
+        translationBuilder.add("text.smm-lib.error.worldnotfound.body", "World %s not found! Make sure it has been created first.");
 
     }
 }

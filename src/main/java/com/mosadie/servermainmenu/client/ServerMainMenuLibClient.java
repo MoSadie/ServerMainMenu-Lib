@@ -2,6 +2,7 @@ package com.mosadie.servermainmenu.client;
 
 import com.mosadie.servermainmenu.api.MenuTheme;
 import com.mosadie.servermainmenu.api.NormalTheme;
+import com.mosadie.servermainmenu.api.Util;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
@@ -77,21 +78,55 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
     }
 
     public static Text getButtonText() {
-        if (config != null && config.joinButtonOptions.overrideJoinButton) {
-            return Text.of(config.joinButtonOptions.buttonTextOverride);
+        if (config != null && config.quickJoinButtonOptions.overrideQuickJoinButton) {
+            return Text.of(config.quickJoinButtonOptions.buttonTextOverride);
         }
 
-        return getTheme().getJoinServerButtonText();
+        return getTheme().getQuickJoinButtonText();
     }
 
-    public static ServerInfo getButtonServerInfo() {
-        if (config != null && config.joinButtonOptions.overrideJoinButton) {
-            ServerInfo serverInfo = new ServerInfo(config.joinButtonOptions.buttonServerNameOverride, config.joinButtonOptions.buttonServerAddressOverride, false);
-            serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
-            return serverInfo;
+    public static void onQuickJoinClick() {
+        if (config != null && config.quickJoinButtonOptions.overrideQuickJoinButton) {
+            switch (config.quickJoinButtonOptions.buttonType) {
+                case SERVER -> Util.joinServer(config.quickJoinButtonOptions.buttonNameOverride, config.quickJoinButtonOptions.buttonDestinationOverride);
+                case WORLD -> Util.loadWorld(config.quickJoinButtonOptions.buttonDestinationOverride);
+            }
+            return;
         }
 
-        return getTheme().getServerInfo();
+        getTheme().onQuickJoinClicked();
+    }
+
+    public static boolean isSingleplayerVisible() {
+        if (config != null && config.visibilityOptions.singleplayer != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.singleplayer == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        }
+
+        return getTheme().isSingleplayerVisible();
+    }
+
+    public static boolean isMultiplayerVisible() {
+        if (config != null && config.visibilityOptions.multiplayer != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.multiplayer == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        }
+
+        return getTheme().isMultiplayerVisible();
+    }
+
+    public static boolean isModsVisible() {
+        if (config != null && config.visibilityOptions.mods != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.mods == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        }
+
+        return getTheme().isModsVisible();
+    }
+
+    public static boolean isQuickJoinVisible() {
+        if (config != null && config.visibilityOptions.quickJoin != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.quickJoin == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        }
+
+        return getTheme().isQuickJoinVisible();
     }
 
     @Override

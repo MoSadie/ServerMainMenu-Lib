@@ -9,10 +9,25 @@ public interface MenuTheme {
     String getId();
     Identifier getPanorama();
     String getSplashText();
-    Text getJoinServerButtonText();
-    ServerInfo getServerInfo();
 
     boolean rollOdds();
 
     int getPriority();
+
+    // -- Quick Join Button ---
+    Text getQuickJoinButtonText();
+    void onQuickJoinClicked();
+
+    // --- Button Visibility ---
+
+    boolean isSingleplayerVisible();
+
+    boolean isMultiplayerVisible();
+
+    boolean isQuickJoinVisible();
+
+    boolean isModsVisible();
+
+
+
 }
