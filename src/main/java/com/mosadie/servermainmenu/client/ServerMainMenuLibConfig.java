@@ -8,7 +8,10 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 public class ServerMainMenuLibConfig implements ConfigData {
 
     @ConfigEntry.Gui.CollapsibleObject
-    JoinButtonOptions joinButtonOptions = new JoinButtonOptions();
+    QuickJoinButtonOptions quickJoinButtonOptions = new QuickJoinButtonOptions();
+
+    @ConfigEntry.Gui.CollapsibleObject
+    VisibilityOptions visibilityOptions = new VisibilityOptions();
 
     @ConfigEntry.Gui.CollapsibleObject
     ThemeOptions themeOptions = new ThemeOptions();
@@ -17,12 +20,36 @@ public class ServerMainMenuLibConfig implements ConfigData {
     SplashOptions splashOptions = new SplashOptions();
 
 
-    static class JoinButtonOptions {
-        boolean overrideJoinButton = false;
-        String buttonTextOverride = "Join the server!";
+    static class QuickJoinButtonOptions {
+        boolean overrideQuickJoinButton = false;
+        String buttonTextOverride = "Join the game!";
         @ConfigEntry.Gui.Tooltip
-        String buttonServerNameOverride = "Server Name";
-        String buttonServerAddressOverride = "localhost";
+        String buttonNameOverride = "Server Name";
+
+        String buttonDestinationOverride = "localhost";
+
+        QuickJoinButtonType buttonType = QuickJoinButtonType.SERVER;
+
+        enum QuickJoinButtonType {
+            SERVER,
+            WORLD
+        }
+    }
+
+    static class VisibilityOptions {
+        enum VisibilityState {
+            DEFAULT,
+            SHOW,
+            HIDE
+        }
+
+        VisibilityState singleplayer = VisibilityState.DEFAULT;
+
+        VisibilityState multiplayer = VisibilityState.DEFAULT;
+
+        VisibilityState mods = VisibilityState.DEFAULT;
+
+        VisibilityState quickJoin = VisibilityState.DEFAULT;
     }
 
     static class ThemeOptions {

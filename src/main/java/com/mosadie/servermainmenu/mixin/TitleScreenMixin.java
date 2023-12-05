@@ -5,7 +5,6 @@ import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.CubeMapRenderer;
-import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.SplashTextRenderer;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -14,8 +13,6 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerWarningScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -60,54 +57,68 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;initWidgetsNormal(II)V"))
     private void redirectInitWidgetsNormal(TitleScreen self, int y, int spacingY) {
-        ButtonWidget.Builder singlePlayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button -> {
-                    MinecraftClient.getInstance().setScreen(new SelectWorldScreen((self)));
-                }))
-                .size(200, 20)
-                .position(self.width / 2 - 100, y);
+        int buttonYMulti = 0;
 
-        this.addDrawableChild(singlePlayerButtonWidgetBuilder.build());
+        if (ServerMainMenuLibClient.isSingleplayerVisible()) {
+            ButtonWidget.Builder singlePlayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button -> {
+                        MinecraftClient.getInstance().setScreen(new SelectWorldScreen((self)));
+                    }))
+                    .size(200, 20)
+                    .position(self.width / 2 - 100, y);
+
+            this.addDrawableChild(singlePlayerButtonWidgetBuilder.build());
+
+            buttonYMulti++;
+        }
 
         final Text disabledText = ((TitleScreenInvoker) this).invokeGetMultiplayerDisabledText();
         boolean isDisabled = disabledText != null;
 
         Tooltip tooltip = Tooltip.of(disabledText);
 
-        ButtonWidget.Builder joinServerButtonWidgetBuilder = ButtonWidget.builder(ServerMainMenuLibClient.getButtonText(), (button) -> {
-            ServerInfo serverInfo = ServerMainMenuLibClient.getButtonServerInfo();
-            serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
-            ConnectScreen.connect(self, MinecraftClient.getInstance(), ServerAddress.parse(serverInfo.address), serverInfo, false);
-        }).position(self.width / 2 - 100, y + spacingY).size(200, 20);
+        if (ServerMainMenuLibClient.isQuickJoinVisible()) {
 
-        if (isDisabled) {
-            joinServerButtonWidgetBuilder.tooltip(tooltip);
+            ButtonWidget.Builder quickJoinButtonWidgetBuilder = ButtonWidget.builder(ServerMainMenuLibClient.getButtonText(), (button) -> {
+                ServerMainMenuLibClient.onQuickJoinClick();
+            }).position(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
+
+            // Technically as of v2.0.0, this button can connect to things outside of multiplayer,
+            // but since it's possible, still going to disable it.
+
+            if (isDisabled) {
+                quickJoinButtonWidgetBuilder.tooltip(tooltip);
+            }
+
+            ButtonWidget joinServerButtonWidget = quickJoinButtonWidgetBuilder.build();
+            joinServerButtonWidget.active = !isDisabled;
+            this.addDrawableChild(quickJoinButtonWidgetBuilder.build());
         }
 
-        ButtonWidget joinServerButtonWidget = joinServerButtonWidgetBuilder.build();
-        joinServerButtonWidget.active = !isDisabled;
-        this.addDrawableChild(joinServerButtonWidgetBuilder.build());
+        if (ServerMainMenuLibClient.isMultiplayerVisible()) {
+            ButtonWidget.Builder multiplayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
+                Screen screen = MinecraftClient.getInstance().options.skipMultiplayerWarning ? new MultiplayerScreen(self) : new MultiplayerWarningScreen(self);
+                MinecraftClient.getInstance().setScreen(screen);
+            }).position(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
 
-        ButtonWidget.Builder multiplayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
-            Screen screen = MinecraftClient.getInstance().options.skipMultiplayerWarning ? new MultiplayerScreen(self) : new MultiplayerWarningScreen(self);
-            MinecraftClient.getInstance().setScreen(screen);
-        }).position(self.width / 2 - 100, y + spacingY * 2).size(200, 20);
+            if (isDisabled)
+                multiplayerButtonWidgetBuilder.tooltip(tooltip);
 
-        if (isDisabled)
-            multiplayerButtonWidgetBuilder.tooltip(tooltip);
+            ButtonWidget multiplayerButtonWidget = multiplayerButtonWidgetBuilder.build();
+            multiplayerButtonWidget.active = !isDisabled;
 
-        ButtonWidget multiplayerButtonWidget = multiplayerButtonWidgetBuilder.build();
-        multiplayerButtonWidget.active = !isDisabled;
+            this.addDrawableChild(multiplayerButtonWidget);
+        }
 
-        this.addDrawableChild(multiplayerButtonWidget);
+        if (ServerMainMenuLibClient.isModsVisible()) {
+            ButtonWidget.Builder modsButtonWidgetBuilder = ButtonWidget.builder(ModMenu.createModsButtonText(true), button -> {
+                Screen modsScreen = ModMenuApi.createModsScreen(MinecraftClient.getInstance().currentScreen);
+                MinecraftClient.getInstance().setScreen(modsScreen);
+            }).position(self.width / 2 + 104, y + spacingY).size(50, 20);
 
-        ButtonWidget.Builder modsButtonWidgetBuilder = ButtonWidget.builder(ModMenu.createModsButtonText(true), button -> {
-            Screen modsScreen = ModMenuApi.createModsScreen(MinecraftClient.getInstance().currentScreen);
-            MinecraftClient.getInstance().setScreen(modsScreen);
-        }).position(self.width / 2 + 104, y + spacingY).size(50, 20);
+            ButtonWidget modsButtonWidget = modsButtonWidgetBuilder.build();
 
-        ButtonWidget modsButtonWidget = modsButtonWidgetBuilder.build();
-
-        this.addDrawableChild(modsButtonWidget);
+            this.addDrawableChild(modsButtonWidget);
+        }
 
     }
 }
