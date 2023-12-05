@@ -5,6 +5,9 @@ on:
     types:
     - published
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -35,5 +38,5 @@ jobs:
     #     curseforge-id: 0
     #     curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-    #    modrinth-id: UPDATEME
-    #    modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        modrinth-id: AbWEdxPY
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
