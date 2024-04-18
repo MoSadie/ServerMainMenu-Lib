@@ -2,10 +2,10 @@ package com.mosadie.servermainmenu.api;
 
 import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.screen.ScreenTexts;
@@ -113,7 +113,10 @@ public class Util {
                 leaveIfNeeded();
 
                 ServerMainMenuLibClient.LOGGER.info("Loading world...");
-                MinecraftClient.getInstance().createIntegratedServerLoader().start(new TitleScreen(), worldName);
+                MinecraftClient.getInstance().createIntegratedServerLoader().start(worldName, () -> {
+                    ServerMainMenuLibClient.LOGGER.info("World load cancelled.");
+                    MinecraftClient.getInstance().setScreen(new TitleScreen());
+                });
             } else {
                 ServerMainMenuLibClient.LOGGER.warn("World " + worldName + " does not exist!");
                 if (MinecraftClient.getInstance().world == null)
