@@ -71,7 +71,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = JavaVersion.VERSION_17
+def targetJavaVersion = JavaVersion.VERSION_21
 
 
 java {
