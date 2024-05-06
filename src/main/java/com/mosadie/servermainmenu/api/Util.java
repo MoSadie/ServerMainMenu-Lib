@@ -103,7 +103,7 @@ public class Util {
 
             // Connect to server
 
-            ConnectScreen.connect(new TitleScreen(), MinecraftClient.getInstance(), ServerAddress.parse(server.address), server, false);
+            ConnectScreen.connect(new TitleScreen(), MinecraftClient.getInstance(), ServerAddress.parse(server.address), server, false, null);
         });
     }
 

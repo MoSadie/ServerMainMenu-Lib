@@ -29,17 +29,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
     @Shadow @Nullable private SplashTextRenderer splashText;
-
-    @Final @Mutable
-    @Shadow @Nullable public static CubeMapRenderer PANORAMA_CUBE_MAP = new CubeMapRenderer(ServerMainMenuLibClient.getTheme().getPanorama());
-
     @Shadow @Nullable private RealmsNotificationsScreen realmsNotificationGui;
 
     protected TitleScreenMixin(Text title) {
         super(title);
     }
 
-    @Inject(method = "isRealmsNotificationsGuiDisplayed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "Lnet/minecraft/client/gui/screen/TitleScreen;isRealmsNotificationsGuiDisplayed()Z", at = @At("HEAD"), cancellable = true)
     private void injectRealmNotification(CallbackInfoReturnable<Boolean> info) {
         info.setReturnValue(false);
     }
@@ -52,7 +48,8 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Inject(method = "init()V", at = @At("HEAD"))
     private void injectSplashText(CallbackInfo info) {
-        this.splashText = new SplashTextRenderer(ServerMainMenuLibClient.getSplashText());
+        if (splashText == null)
+            this.splashText = new SplashTextRenderer(ServerMainMenuLibClient.getSplashText());
     }
 
     @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;initWidgetsNormal(II)V"))
