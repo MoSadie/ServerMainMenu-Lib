@@ -22,7 +22,7 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
 
     public static final String MOD_ID = "smm-lib";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    static RegistryKey<Registry<MenuTheme>> registryKey = RegistryKey.ofRegistry(new Identifier(MOD_ID, "menu_theme"));
+    static RegistryKey<Registry<MenuTheme>> registryKey = RegistryKey.ofRegistry(Identifier.of(MOD_ID, "menu_theme"));
     public static Registry<MenuTheme> registry = FabricRegistryBuilder.createSimple(registryKey)
             .buildAndRegister();
 
@@ -32,7 +32,7 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
         if (config != null && config.themeOptions.themeNamespace != null && config.themeOptions.themeId != null && config.themeOptions.overrideTheme) {
             LOGGER.info("Theme selected via override: " + config.themeOptions.themeNamespace + ":" + config.themeOptions.themeId);
 
-            Identifier id = new Identifier(config.themeOptions.themeNamespace, config.themeOptions.themeId);
+            Identifier id = Identifier.of(config.themeOptions.themeNamespace, config.themeOptions.themeId);
 
             if (registry.containsId(id))
                 return registry.get(id);
