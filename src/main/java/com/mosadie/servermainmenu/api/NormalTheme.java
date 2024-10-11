@@ -16,7 +16,7 @@ public class NormalTheme implements MenuTheme{
 
     @Override
     public Identifier getPanorama() {
-        return new Identifier("minecraft", "textures/gui/title/background/panorama");
+        return Identifier.ofVanilla("textures/gui/title/background/panorama");
     }
 
     @Override
