@@ -4,7 +4,6 @@ import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
 import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.CubeMapRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.SplashTextRenderer;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -16,9 +15,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -52,8 +49,8 @@ public abstract class TitleScreenMixin extends Screen {
             this.splashText = new SplashTextRenderer(ServerMainMenuLibClient.getSplashText());
     }
 
-    @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;initWidgetsNormal(II)V"))
-    private void redirectInitWidgetsNormal(TitleScreen self, int y, int spacingY) {
+    @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;addNormalWidgets(II)I"))
+    private int redirectInitWidgetsNormal(TitleScreen self, int y, int spacingY) {
         int buttonYMulti = 0;
 
         int buttonCount = 0;
@@ -127,5 +124,6 @@ public abstract class TitleScreenMixin extends Screen {
             this.addDrawableChild(modsButtonWidget);
         }
 
+        return y + (--buttonYMulti * spacingY);
     }
 }
