@@ -8,7 +8,6 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
@@ -29,27 +28,37 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
     private static MenuTheme selectTheme() {
         LOGGER.info("Selecting Menu Theme!");
 
+        MenuTheme selectedTheme = null;
+
         if (config != null && config.themeOptions.themeNamespace != null && config.themeOptions.themeId != null && config.themeOptions.overrideTheme) {
             LOGGER.info("Theme selected via override: " + config.themeOptions.themeNamespace + ":" + config.themeOptions.themeId);
 
             Identifier id = Identifier.of(config.themeOptions.themeNamespace, config.themeOptions.themeId);
-
-            if (registry.containsId(id))
-                return registry.get(id);
+            if (registry.containsId(id)) {
+                selectedTheme = registry.get(id);
+            }
             else {
                 LOGGER.info("Failed to get theme via override! Falling back to Normal.");
-                return new NormalTheme();
+                selectedTheme = new NormalTheme();
             }
         }
 
-        MenuTheme selectedTheme = new NormalTheme();
-
-        for(MenuTheme theme : registry) {
-            if (theme.getPriority() >= selectedTheme.getPriority()) {
-                if (theme.rollOdds()) {
-                    selectedTheme = theme;
+        if (selectedTheme == null) {
+            LOGGER.info("Selecting random theme...");
+            int currentPriority = 0;
+            for (MenuTheme theme : registry) {
+                if (theme.getPriority() >= currentPriority) {
+                    if (theme.rollOdds()) {
+                        selectedTheme = theme;
+                        currentPriority = theme.getPriority();
+                    }
                 }
             }
+        }
+
+        if (selectedTheme == null) {
+            LOGGER.info("No theme selected! Falling back to Normal.");
+            selectedTheme = new NormalTheme();
         }
 
         LOGGER.info("Selected Menu Theme: " + selectedTheme.getId());
