@@ -6,9 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "TitleScreenMixin",
     "TitleScreenInvoker",
-    "ScreenMixin"
+    "TitleScreenMixin",
+    "IdentifierMixin"
   ],
   "injectors": {
     "defaultRequire": 1
