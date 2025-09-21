@@ -132,8 +132,8 @@ public class Util {
         if (MinecraftClient.getInstance().world != null) {
             ServerMainMenuLibClient.LOGGER.info("Disconnecting from world...");
 
-            MinecraftClient.getInstance().world.disconnect();
-            MinecraftClient.getInstance().disconnect();
+            MinecraftClient.getInstance().world.disconnect(Text.translatable("menu.disconnect"));
+            MinecraftClient.getInstance().disconnectWithProgressScreen();
         }
     }
 }
