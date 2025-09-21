@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(Identifier.class)
 public class IdentifierMixin {
     // I'm sorry future self for this mixin. It's a complete hack, and will likely break at some point.
+    // Future self here in September 2025. This has so far caused 1 bug report. (#12)
     /**
      * @author MoSadie
      * @reason Trying to get the panorama ID to resolve to a custom one instead, am tied of running into so many rendering issues so time for hacky solutions. Added in v2.0.5 when updating to Minecraft 1.21.5 because I could not get the previous system of overwriting the panorama renderer completely to work.

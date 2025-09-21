@@ -30,11 +30,11 @@
     "servermainmenu-lib.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.10",
-    "fabric-api": ">=0.119.5",
+    "fabricloader": ">=0.17.2",
+    "fabric-api": ">=0.128.2",
     "minecraft": "~1.21",
-    "modmenu": ">=13.0.0",
-    "cloth-config": ">=18.0.145"
+    "modmenu": ">=15.0.0",
+    "cloth-config": ">=19.0.147"
   },
   "custom": {
     "modmenu": {
