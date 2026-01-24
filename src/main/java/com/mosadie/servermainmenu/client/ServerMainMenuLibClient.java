@@ -78,12 +78,12 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
 
     private static ServerMainMenuLibConfig config;
 
-    public static String getSplashText() {
+    public static Text getSplashText() {
         if (config != null && config.splashOptions.overrideSplash) {
-            return config.splashOptions.overrideSplashText;
+            return Text.of(config.splashOptions.overrideSplashText);
         }
 
-        return getTheme().getSplashText();
+        return Text.of(getTheme().getSplashText());
     }
 
     public static Text getButtonText() {
