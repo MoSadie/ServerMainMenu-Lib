@@ -20,8 +20,8 @@ public class NormalTheme implements MenuTheme{
     }
 
     @Override
-    public String getSplashText() {
-        return "Just a normal menu...";
+    public Text getSplashAsText() {
+        return Text.literal("Just a normal menu...");
     }
 
     @Override
