@@ -1,6 +1,6 @@
-package com.mosadie.servermainmenu.mixin;
+package com.mosadie.simplemainmenu.mixin;
 
-import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
+import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
 import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.minecraft.client.MinecraftClient;
@@ -46,7 +46,7 @@ public abstract class TitleScreenMixin extends Screen {
     @Inject(method = "init()V", at = @At("HEAD"))
     private void injectSplashText(CallbackInfo info) {
         if (splashText == null)
-            this.splashText = new SplashTextRenderer(ServerMainMenuLibClient.getSplashText());
+            this.splashText = new SplashTextRenderer(SimpleMainMenuLibClient.getSplashText());
     }
 
     @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;addNormalWidgets(II)I"))
@@ -55,15 +55,15 @@ public abstract class TitleScreenMixin extends Screen {
 
         int buttonCount = 0;
 
-        if (ServerMainMenuLibClient.isSingleplayerVisible()) buttonCount++;
-        if (ServerMainMenuLibClient.isMultiplayerVisible()) buttonCount++;
-        if (ServerMainMenuLibClient.isQuickJoinVisible()) buttonCount++;
+        if (SimpleMainMenuLibClient.isSingleplayerVisible()) buttonCount++;
+        if (SimpleMainMenuLibClient.isMultiplayerVisible()) buttonCount++;
+        if (SimpleMainMenuLibClient.isQuickJoinVisible()) buttonCount++;
 
         if (buttonCount == 1) {
             buttonYMulti = 1;
         }
 
-        if (ServerMainMenuLibClient.isSingleplayerVisible()) {
+        if (SimpleMainMenuLibClient.isSingleplayerVisible()) {
             ButtonWidget.Builder singlePlayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button -> {
                         MinecraftClient.getInstance().setScreen(new SelectWorldScreen((self)));
                     }))
@@ -80,10 +80,10 @@ public abstract class TitleScreenMixin extends Screen {
 
         Tooltip tooltip = Tooltip.of(disabledText);
 
-        if (ServerMainMenuLibClient.isQuickJoinVisible()) {
+        if (SimpleMainMenuLibClient.isQuickJoinVisible()) {
 
-            ButtonWidget.Builder quickJoinButtonWidgetBuilder = ButtonWidget.builder(ServerMainMenuLibClient.getButtonText(), (button) -> {
-                ServerMainMenuLibClient.onQuickJoinClick();
+            ButtonWidget.Builder quickJoinButtonWidgetBuilder = ButtonWidget.builder(SimpleMainMenuLibClient.getButtonText(), (button) -> {
+                SimpleMainMenuLibClient.onQuickJoinClick();
             }).position(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
 
             // Technically as of v2.0.0, this button can connect to things outside of multiplayer,
@@ -98,7 +98,7 @@ public abstract class TitleScreenMixin extends Screen {
             this.addDrawableChild(quickJoinButtonWidgetBuilder.build());
         }
 
-        if (ServerMainMenuLibClient.isMultiplayerVisible()) {
+        if (SimpleMainMenuLibClient.isMultiplayerVisible()) {
             ButtonWidget.Builder multiplayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
                 Screen screen = MinecraftClient.getInstance().options.skipMultiplayerWarning ? new MultiplayerScreen(self) : new MultiplayerWarningScreen(self);
                 MinecraftClient.getInstance().setScreen(screen);
@@ -113,7 +113,7 @@ public abstract class TitleScreenMixin extends Screen {
             this.addDrawableChild(multiplayerButtonWidget);
         }
 
-        if (ServerMainMenuLibClient.isModsVisible()) {
+        if (SimpleMainMenuLibClient.isModsVisible()) {
             ButtonWidget.Builder modsButtonWidgetBuilder = ButtonWidget.builder(ModMenu.createModsButtonText(true), button -> {
                 Screen modsScreen = ModMenuApi.createModsScreen(MinecraftClient.getInstance().currentScreen);
                 MinecraftClient.getInstance().setScreen(modsScreen);

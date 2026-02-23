@@ -1,6 +1,6 @@
-package com.mosadie.servermainmenu.mixin;
+package com.mosadie.simplemainmenu.mixin;
 
-import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
+import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -17,7 +17,7 @@ public class IdentifierMixin {
     public static Identifier ofVanilla(String path) {
         // If we are getting the background panorama texture, we want to return the custom panorama texture from the selected theme instead.
         if (path != null && path.equals("textures/gui/title/background/panorama")) {
-            return ServerMainMenuLibClient.getTheme().getPanorama();
+            return SimpleMainMenuLibClient.getTheme().getPanorama();
         }
 
         return Identifier.of("minecraft", path);

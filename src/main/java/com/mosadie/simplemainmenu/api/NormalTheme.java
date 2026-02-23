@@ -1,7 +1,5 @@
-package com.mosadie.servermainmenu.api;
+package com.mosadie.simplemainmenu.api;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
