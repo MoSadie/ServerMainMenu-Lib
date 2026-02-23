@@ -2,32 +2,32 @@
   "schemaVersion": 1,
   "id": "smm-lib",
   "version": "${version}",
-  "name": "ServerMainMenu Lib",
+  "name": "SimpleMainMenu Lib",
   "description": "Library mod to customize the main menu.",
   "authors": [
     "MoSadie"
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/smm-lib",
-    "sources": "https://github.com/MoSadie/ServerMainMenu-Lib",
-    "issues": "https://github.com/MoSadie/ServerMainMenu-Lib/issues"
+    "sources": "https://github.com/MoSadie/SimpleMainMenu-Lib",
+    "issues": "https://github.com/MoSadie/SimpleMainMenu-Lib/issues"
   },
   "license": "LGPL-3.0",
   "icon": "assets/smm-lib/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.mosadie.servermainmenu.client.ServerMainMenuLibClient"
+      "com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient"
     ],
     "fabric-datagen": [
-      "com.mosadie.servermainmenu.client.data.ServerMainMenuLibDataGen"
+      "com.mosadie.simplemainmenu.client.data.SimpleMainMenuLibDataGen"
     ],
     "modmenu": [
-      "com.mosadie.servermainmenu.client.ServerMainMenuLibModMenuIntegration"
+      "com.mosadie.simplemainmenu.client.SimpleMainMenuLibModMenuIntegration"
     ]
   },
   "mixins": [
-    "servermainmenu-lib.mixins.json"
+    "simplemainmenu-lib.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.18.0",

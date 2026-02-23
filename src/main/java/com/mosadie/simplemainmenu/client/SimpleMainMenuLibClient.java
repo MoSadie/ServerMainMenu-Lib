@@ -1,8 +1,8 @@
-package com.mosadie.servermainmenu.client;
+package com.mosadie.simplemainmenu.client;
 
-import com.mosadie.servermainmenu.api.MenuTheme;
-import com.mosadie.servermainmenu.api.NormalTheme;
-import com.mosadie.servermainmenu.api.Util;
+import com.mosadie.simplemainmenu.api.MenuTheme;
+import com.mosadie.simplemainmenu.api.NormalTheme;
+import com.mosadie.simplemainmenu.api.Util;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
-public class ServerMainMenuLibClient implements ClientModInitializer {
+public class SimpleMainMenuLibClient implements ClientModInitializer {
 
     public static final String MOD_ID = "smm-lib";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -76,16 +76,14 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
         return menuTheme;
     }
 
-    private static ServerMainMenuLibConfig config;
+    private static SimpleMainMenuLibConfig config;
 
     @SuppressWarnings("deprecation")
     public static Text getSplashText() {
         if (config != null && config.splashOptions.overrideSplash) {
             return Text.of(config.splashOptions.overrideSplashText);
         }
-
-        // Should still work with old mods that don't implement the asText method I hope...
-        if (getTheme().getSplashText() != null) return Text.literal(getTheme().getSplashText()).setStyle(Util.SPLASH_TEXT_STYLE);
+        
         return getTheme().getSplashAsText();
     }
 
@@ -110,32 +108,32 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
     }
 
     public static boolean isSingleplayerVisible() {
-        if (config != null && config.visibilityOptions.singleplayer != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
-            return config.visibilityOptions.singleplayer == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        if (config != null && config.visibilityOptions.singleplayer != SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.singleplayer == SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
         }
 
         return getTheme().isSingleplayerVisible();
     }
 
     public static boolean isMultiplayerVisible() {
-        if (config != null && config.visibilityOptions.multiplayer != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
-            return config.visibilityOptions.multiplayer == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        if (config != null && config.visibilityOptions.multiplayer != SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.multiplayer == SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
         }
 
         return getTheme().isMultiplayerVisible();
     }
 
     public static boolean isModsVisible() {
-        if (config != null && config.visibilityOptions.mods != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
-            return config.visibilityOptions.mods == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        if (config != null && config.visibilityOptions.mods != SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.mods == SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
         }
 
         return getTheme().isModsVisible();
     }
 
     public static boolean isQuickJoinVisible() {
-        if (config != null && config.visibilityOptions.quickJoin != ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
-            return config.visibilityOptions.quickJoin == ServerMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
+        if (config != null && config.visibilityOptions.quickJoin != SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.DEFAULT) {
+            return config.visibilityOptions.quickJoin == SimpleMainMenuLibConfig.VisibilityOptions.VisibilityState.SHOW;
         }
 
         return getTheme().isQuickJoinVisible();
@@ -147,19 +145,19 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
 
         LOGGER.info("Configuring Config...");
 
-        AutoConfig.register(ServerMainMenuLibConfig.class, GsonConfigSerializer::new);
+        AutoConfig.register(SimpleMainMenuLibConfig.class, GsonConfigSerializer::new);
 
-        AutoConfig.getConfigHolder(ServerMainMenuLibConfig.class).registerSaveListener(ServerMainMenuLibClient::onConfigSave);
+        AutoConfig.getConfigHolder(SimpleMainMenuLibConfig.class).registerSaveListener(SimpleMainMenuLibClient::onConfigSave);
 
-        config = AutoConfig.getConfigHolder(ServerMainMenuLibConfig.class).getConfig();
+        config = AutoConfig.getConfigHolder(SimpleMainMenuLibConfig.class).getConfig();
 
         LOGGER.info("SimpleServerMenu-Lib Initialized!");
     }
 
-    private static ActionResult onConfigSave(ConfigHolder<ServerMainMenuLibConfig> islandMenuConfigConfigHolder, ServerMainMenuLibConfig serverMainMenuLibConfig) {
+    private static ActionResult onConfigSave(ConfigHolder<SimpleMainMenuLibConfig> simpleMainMenuLibConfigConfigHolder, SimpleMainMenuLibConfig simpleMainMenuLibConfig) {
         LOGGER.info("Updating config!");
 
-        config = serverMainMenuLibConfig;
+        config = simpleMainMenuLibConfig;
 
         menuTheme = selectTheme();
 

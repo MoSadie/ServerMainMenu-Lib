@@ -1,17 +1,11 @@
-package com.mosadie.servermainmenu.api;
+package com.mosadie.simplemainmenu.api;
 
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.resource.Resource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public interface MenuTheme {
     String getId();
     Identifier getPanorama();
-    @Deprecated
-    default String getSplashText() {
-        return null;
-    }
     Text getSplashAsText();
 
     boolean rollOdds();

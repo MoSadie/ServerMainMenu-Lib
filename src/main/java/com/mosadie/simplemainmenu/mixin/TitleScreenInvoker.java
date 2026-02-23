@@ -1,4 +1,4 @@
-package com.mosadie.servermainmenu.mixin;
+package com.mosadie.simplemainmenu.mixin;
 
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.text.Text;

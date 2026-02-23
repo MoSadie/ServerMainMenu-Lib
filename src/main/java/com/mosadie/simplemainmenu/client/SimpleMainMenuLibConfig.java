@@ -1,11 +1,11 @@
-package com.mosadie.servermainmenu.client;
+package com.mosadie.simplemainmenu.client;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = ServerMainMenuLibClient.MOD_ID)
-public class ServerMainMenuLibConfig implements ConfigData {
+@Config(name = SimpleMainMenuLibClient.MOD_ID)
+public class SimpleMainMenuLibConfig implements ConfigData {
 
     @ConfigEntry.Gui.CollapsibleObject
     QuickJoinButtonOptions quickJoinButtonOptions = new QuickJoinButtonOptions();

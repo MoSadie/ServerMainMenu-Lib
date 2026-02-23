@@ -1,10 +1,10 @@
 {
   "text.autoconfig.smm-lib.option.quickJoinButtonOptions": "Quick Join Button Settings",
-  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonDestinationOverride": "Quick Join Button Server Address / World Folder",
-  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonNameOverride": "Quick Join Button Server Name",
+  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonDestinationOverride": "Server Address / World Folder",
+  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonNameOverride": "Button Server Name",
   "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonNameOverride.@Tooltip": "Mainly used by mods such as ReplayMod to track what server you were on. Unused in World mode.",
-  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonTextOverride": "Quick Join Button Text",
-  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonType": "Quick Join Button Destination Type",
+  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonTextOverride": "Button Text",
+  "text.autoconfig.smm-lib.option.quickJoinButtonOptions.buttonType": "Destination Type",
   "text.autoconfig.smm-lib.option.quickJoinButtonOptions.overrideQuickJoinButton": "Override Quick Join Button?",
   "text.autoconfig.smm-lib.option.splashOptions": "Splash Message Settings",
   "text.autoconfig.smm-lib.option.splashOptions.overrideSplash": "Override Splash Text?",
@@ -19,7 +19,7 @@
   "text.autoconfig.smm-lib.option.visibilityOptions.multiplayer": "Show Multiplayer Button",
   "text.autoconfig.smm-lib.option.visibilityOptions.quickJoin": "Show Quick Join Button",
   "text.autoconfig.smm-lib.option.visibilityOptions.singleplayer": "Show Singleplayer Button",
-  "text.autoconfig.smm-lib.title": "ServerMainMenu Lib Settings",
+  "text.autoconfig.smm-lib.title": "SimpleMainMenu Lib Settings",
   "text.smm-lib.error.worldnotfound.body": "World %s not found! Make sure it has been created first.",
   "text.smm-lib.error.worldnotfound.title": "World not found!",
   "text.smmlib.normaltheme.joinserver": "Join the server!"

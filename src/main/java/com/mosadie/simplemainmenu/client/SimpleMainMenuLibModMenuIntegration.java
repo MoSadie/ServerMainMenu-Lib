@@ -1,12 +1,12 @@
-package com.mosadie.servermainmenu.client;
+package com.mosadie.simplemainmenu.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfigClient;
 
-public class ServerMainMenuLibModMenuIntegration implements ModMenuApi {
+public class SimpleMainMenuLibModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> AutoConfigClient.getConfigScreen(ServerMainMenuLibConfig.class, parent).get();
+        return parent -> AutoConfigClient.getConfigScreen(SimpleMainMenuLibConfig.class, parent).get();
     }
 }
