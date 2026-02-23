@@ -83,9 +83,7 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
         if (config != null && config.splashOptions.overrideSplash) {
             return Text.of(config.splashOptions.overrideSplashText);
         }
-
-        // Fallback in case of older themes that still use the deprecated getSplashText method.
-        if (getTheme().getSplashText() != null) return Text.literal(getTheme().getSplashText()).setStyle(Util.SPLASH_TEXT_STYLE);
+        
         return getTheme().getSplashAsText();
     }
 

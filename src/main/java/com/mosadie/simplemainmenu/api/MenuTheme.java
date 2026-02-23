@@ -6,10 +6,6 @@ import net.minecraft.util.Identifier;
 public interface MenuTheme {
     String getId();
     Identifier getPanorama();
-    @Deprecated
-    default String getSplashText() {
-        return null;
-    }
     Text getSplashAsText();
 
     boolean rollOdds();

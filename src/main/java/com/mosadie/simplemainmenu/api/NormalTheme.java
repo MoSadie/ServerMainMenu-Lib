@@ -19,7 +19,7 @@ public class NormalTheme implements MenuTheme{
 
     @Override
     public Text getSplashAsText() {
-        return Text.literal("Just a normal menu...");
+        return Text.literal("Just a normal menu...").setStyle(Util.SPLASH_TEXT_STYLE);
     }
 
     @Override
