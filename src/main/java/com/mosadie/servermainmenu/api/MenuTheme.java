@@ -8,7 +8,11 @@ import net.minecraft.util.Identifier;
 public interface MenuTheme {
     String getId();
     Identifier getPanorama();
-    String getSplashText();
+    @Deprecated
+    default String getSplashText() {
+        return null;
+    }
+    Text getSplashAsText();
 
     boolean rollOdds();
 
