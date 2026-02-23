@@ -85,7 +85,7 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
         }
 
         // Should still work with old mods that don't implement the asText method I hope...
-        if (getTheme().getSplashText() != null) return Text.of(getTheme().getSplashText());
+        if (getTheme().getSplashText() != null) return Text.literal(getTheme().getSplashText()).setStyle(Util.SPLASH_TEXT_STYLE);
         return getTheme().getSplashAsText();
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 
@@ -136,4 +137,6 @@ public class Util {
             MinecraftClient.getInstance().disconnectWithProgressScreen();
         }
     }
+
+    public static final Style SPLASH_TEXT_STYLE = Style.EMPTY.withColor(-256);
 }
