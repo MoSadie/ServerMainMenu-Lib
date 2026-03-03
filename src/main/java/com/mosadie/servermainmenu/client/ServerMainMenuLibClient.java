@@ -78,15 +78,12 @@ public class ServerMainMenuLibClient implements ClientModInitializer {
 
     private static ServerMainMenuLibConfig config;
 
-    @SuppressWarnings("deprecation")
-    public static Text getSplashText() {
+    public static Text[] getSplashText() {
         if (config != null && config.splashOptions.overrideSplash) {
-            return Text.of(config.splashOptions.overrideSplashText);
+            return new Text[] { Text.of(config.splashOptions.overrideSplashText) };
         }
 
-        // Should still work with old mods that don't implement the asText method I hope...
-        if (getTheme().getSplashText() != null) return Text.literal(getTheme().getSplashText()).setStyle(Util.SPLASH_TEXT_STYLE);
-        return getTheme().getSplashAsText();
+        return getTheme().getSplashText();
     }
 
     public static Text getButtonText() {
