@@ -20,11 +20,11 @@ public class NormalTheme implements MenuTheme{
     }
 
     @Override
-    public Text[] getSplashText() {
-        return new Text[] {
-                Text.literal("Just a normal menu..."),
-                Text.literal("yay!")
-        };
+    public SplashText getSplashText() {
+        return SplashText.builder()
+                .addLine("Just a normal menu...")
+                .addLine("yay!")
+                .build();
     }
 
     @Override

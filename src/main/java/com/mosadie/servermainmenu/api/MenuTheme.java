@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 public interface MenuTheme {
     String getId();
     Identifier getPanorama();
-    Text[] getSplashText();
+    SplashText getSplashText();
 
     boolean rollOdds();
 
