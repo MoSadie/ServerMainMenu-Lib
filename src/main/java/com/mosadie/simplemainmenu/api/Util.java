@@ -1,8 +1,7 @@
-package com.mosadie.servermainmenu.api;
+package com.mosadie.simplemainmenu.api;
 
-import com.mosadie.servermainmenu.client.ServerMainMenuLibClient;
+import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
@@ -100,7 +99,7 @@ public class Util {
         MinecraftClient.getInstance().send(() -> {
             leaveIfNeeded();
 
-            ServerMainMenuLibClient.LOGGER.info("Connecting to " + server.address);
+            SimpleMainMenuLibClient.LOGGER.info("Connecting to " + server.address);
 
             // Connect to server
 
@@ -113,13 +112,13 @@ public class Util {
             if (MinecraftClient.getInstance().getLevelStorage().levelExists(worldName)) {
                 leaveIfNeeded();
 
-                ServerMainMenuLibClient.LOGGER.info("Loading world...");
+                SimpleMainMenuLibClient.LOGGER.info("Loading world...");
                 MinecraftClient.getInstance().createIntegratedServerLoader().start(worldName, () -> {
-                    ServerMainMenuLibClient.LOGGER.info("World load cancelled.");
+                    SimpleMainMenuLibClient.LOGGER.info("World load cancelled.");
                     MinecraftClient.getInstance().setScreen(new TitleScreen());
                 });
             } else {
-                ServerMainMenuLibClient.LOGGER.warn("World " + worldName + " does not exist!");
+                SimpleMainMenuLibClient.LOGGER.warn("World " + worldName + " does not exist!");
                 if (MinecraftClient.getInstance().world == null)
                     MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> MinecraftClient.getInstance().setScreen(new TitleScreen()), Text.translatable("text.smm-lib.error.worldnotfound.title"), Text.translatable("text.smm-lib.error.worldnotfound.body", worldName), ScreenTexts.TO_TITLE, true));
             }
@@ -131,7 +130,7 @@ public class Util {
      */
     private static void leaveIfNeeded() {
         if (MinecraftClient.getInstance().world != null) {
-            ServerMainMenuLibClient.LOGGER.info("Disconnecting from world...");
+            SimpleMainMenuLibClient.LOGGER.info("Disconnecting from world...");
 
             MinecraftClient.getInstance().world.disconnect(Text.translatable("menu.disconnect"));
             MinecraftClient.getInstance().disconnectWithProgressScreen();

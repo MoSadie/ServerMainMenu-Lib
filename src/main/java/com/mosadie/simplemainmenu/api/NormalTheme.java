@@ -1,7 +1,5 @@
-package com.mosadie.servermainmenu.api;
+package com.mosadie.simplemainmenu.api;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -22,8 +20,8 @@ public class NormalTheme implements MenuTheme{
     @Override
     public SplashText getSplashText() {
         return SplashText.builder()
-                .addLine("Just a normal menu...")
-                .addLine("yay!")
+                .addLine("Just a normal menu...") // Example of using addLine with a String...
+                .addLine(Text.literal("for now!").setStyle(Util.SPLASH_TEXT_STYLE)) // Or using a Text object with styling!
                 .build();
     }
 

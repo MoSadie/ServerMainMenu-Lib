@@ -1,4 +1,4 @@
-package com.mosadie.servermainmenu.client.data;
+package com.mosadie.simplemainmenu.client.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -6,8 +6,8 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ServerMainMenuLibEnLangProvider extends FabricLanguageProvider {
-    protected ServerMainMenuLibEnLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+public class SimpleMainMenuLibEnLangProvider extends FabricLanguageProvider {
+    protected SimpleMainMenuLibEnLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
     }
 
@@ -15,7 +15,7 @@ public class ServerMainMenuLibEnLangProvider extends FabricLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
         translationBuilder.add("text.smmlib.normaltheme.joinserver", "Join the server!");
 
-        translationBuilder.add("text.autoconfig.smm-lib.title", "ServerMainMenu Lib Settings");
+        translationBuilder.add("text.autoconfig.smm-lib.title", "SimpleMainMenu Lib Settings");
 
         translationBuilder.add("text.autoconfig.smm-lib.option.quickJoinButtonOptions", "Quick Join Button Settings");
 

@@ -80,11 +80,12 @@ java {
     if (System.getenv("CI") == null) {
         withSourcesJar()
     }
+    //withJavadocJar()
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.archiveBaseName}" }
     }
 }
 

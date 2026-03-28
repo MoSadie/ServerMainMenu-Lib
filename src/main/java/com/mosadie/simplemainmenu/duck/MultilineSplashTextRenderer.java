@@ -1,4 +1,4 @@
-package com.mosadie.servermainmenu.duck;
+package com.mosadie.simplemainmenu.duck;
 
 import net.minecraft.text.Text;
 

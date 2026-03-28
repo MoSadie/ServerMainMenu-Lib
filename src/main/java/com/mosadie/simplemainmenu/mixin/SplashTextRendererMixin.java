@@ -1,8 +1,8 @@
-package com.mosadie.servermainmenu.mixin;
+package com.mosadie.simplemainmenu.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mosadie.servermainmenu.duck.MultilineSplashTextRenderer;
+import com.mosadie.simplemainmenu.duck.MultilineSplashTextRenderer;
 import net.minecraft.client.font.Alignment;
 import net.minecraft.client.font.DrawnTextConsumer;
 import net.minecraft.client.font.TextRenderer;
