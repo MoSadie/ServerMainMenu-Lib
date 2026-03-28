@@ -1,7 +1,7 @@
 package com.mosadie.simplemainmenu.api;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 /**
  * An example of a simple menu theme.
@@ -14,21 +14,21 @@ public class NormalTheme implements MenuTheme{
 
     @Override
     public Identifier getPanorama() {
-        return Identifier.of("minecraft", "textures/gui/title/background/panorama");
+        return Identifier.fromNamespaceAndPath("minecraft", "textures/gui/title/background/panorama");
     }
 
     @Override
     public SplashText getSplashText() {
         return SplashText.builder()
                 .addLine("Just a normal menu...") // Example of using addLine with a String...
-                .addLine(Text.literal("for now!").setStyle(Util.SPLASH_TEXT_STYLE)) // Or using a Text object with styling!
+                .addLine(Component.literal("for now!").setStyle(Util.SPLASH_TEXT_STYLE)) // Or using a Text object with styling!
                 .build();
     }
 
     @Override
-    public Text getQuickJoinButtonText() {
+    public Component getQuickJoinButtonComponent() {
         // Use Text.translatable for translatable text, or Text.literal to statically define text.
-        return Text.translatable("text.smmlib.normaltheme.joinserver");
+        return Component.translatable("text.smmlib.normaltheme.joinserver");
     }
 
     @Override

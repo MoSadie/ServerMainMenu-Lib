@@ -1,7 +1,8 @@
 package com.mosadie.simplemainmenu.api;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 public interface MenuTheme {
     String getId();
@@ -13,7 +14,7 @@ public interface MenuTheme {
     int getPriority();
 
     // -- Quick Join Button ---
-    Text getQuickJoinButtonText();
+    Component getQuickJoinButtonComponent();
     void onQuickJoinClicked();
 
     // --- Button Visibility ---

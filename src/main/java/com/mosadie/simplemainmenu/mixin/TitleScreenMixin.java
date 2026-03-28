@@ -1,20 +1,20 @@
 package com.mosadie.simplemainmenu.mixin;
 
+import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
 import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
 import com.mosadie.simplemainmenu.duck.MultilineSplashTextRenderer;
 import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.SplashTextRenderer;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerWarningScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,35 +26,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
-    @Shadow @Nullable private SplashTextRenderer splashText;
-    @Shadow @Nullable private RealmsNotificationsScreen realmsNotificationGui;
+    @Shadow @Nullable private SplashRenderer splash;
+    @Shadow @Nullable private RealmsNotificationsScreen realmsNotificationsScreen;
 
-    protected TitleScreenMixin(Text title) {
+    protected TitleScreenMixin(Component title) {
         super(title);
     }
 
-    @Inject(method = "Lnet/minecraft/client/gui/screen/TitleScreen;isRealmsNotificationsGuiDisplayed()Z", at = @At("HEAD"), cancellable = true)
+    // "Lnet/minecraft/client/gui/screen/TitleScreen;isRealmsNotificationsGuiDisplayed()Z"
+    @Inject(method = "realmsNotificationsEnabled", at = @At("HEAD"), cancellable = true)
     private void injectRealmNotification(CallbackInfoReturnable<Boolean> info) {
         info.setReturnValue(false);
     }
 
-    @Inject(method = "onDisplayed", at = @At("HEAD"), cancellable = true)
-    private void injectOnDisplayed(CallbackInfo ci) {
-        super.onDisplayed();
-        ci.cancel();
-    }
+//    @Inject(method = "onDisplayed", at = @At("HEAD"), cancellable = true)
+//    private void injectOnDisplayed(CallbackInfo ci) {
+//        super.onDisplayed();
+//        ci.cancel();
+//    }
 
     @Inject(method = "init()V", at = @At("HEAD"))
     private void injectSplashText(CallbackInfo info) {
-        if (splashText == null) {
-            Text[] splashes = SimpleMainMenuLibClient.getSplashText();
+        if (splash == null) {
+            Component[] splashes = SimpleMainMenuLibClient.getSplashText();
             // Still provide the first line or empty to avoid anything else that tries to use it crashing
-            this.splashText = new SplashTextRenderer(splashes.length == 0 ? Text.of("") : splashes[0]);
-            ((MultilineSplashTextRenderer) this.splashText).smm_lib$setMultilineText(splashes);
+            this.splash = new SplashRenderer(splashes.length == 0 ? Component.literal("") : splashes[0]);
+            ((MultilineSplashTextRenderer) this.splash).smm_lib$setMultilineText(splashes);
         }
     }
 
-    @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;addNormalWidgets(II)I"))
+    @Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/TitleScreen;createNormalMenuOptions(II)I"))
     private int redirectInitWidgetsNormal(TitleScreen self, int y, int spacingY) {
         int buttonYMulti = 0;
 
@@ -69,27 +70,27 @@ public abstract class TitleScreenMixin extends Screen {
         }
 
         if (SimpleMainMenuLibClient.isSingleplayerVisible()) {
-            ButtonWidget.Builder singlePlayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button -> {
-                        MinecraftClient.getInstance().setScreen(new SelectWorldScreen((self)));
+            Button.Builder singlePlayerButtonWidgetBuilder = Button.builder(Component.translatable("menu.singleplayer"), (button -> {
+                        Minecraft.getInstance().setScreen(new SelectWorldScreen((self)));
                     }))
                     .size(200, 20)
-                    .position(self.width / 2 - 100, y);
+                    .pos(self.width / 2 - 100, y);
 
-            this.addDrawableChild(singlePlayerButtonWidgetBuilder.build());
+            this.addRenderableWidget(singlePlayerButtonWidgetBuilder.build());
 
             buttonYMulti++;
         }
 
-        final Text disabledText = ((TitleScreenInvoker) this).invokeGetMultiplayerDisabledText();
+        final Component disabledText = ((TitleScreenInvoker) this).invokeGetMultiplayerDisabledReason();
         boolean isDisabled = disabledText != null;
 
-        Tooltip tooltip = Tooltip.of(disabledText);
+        Tooltip tooltip = Tooltip.create(disabledText);
 
         if (SimpleMainMenuLibClient.isQuickJoinVisible()) {
 
-            ButtonWidget.Builder quickJoinButtonWidgetBuilder = ButtonWidget.builder(SimpleMainMenuLibClient.getButtonText(), (button) -> {
+            Button.Builder quickJoinButtonWidgetBuilder = Button.builder(SimpleMainMenuLibClient.getButtonComponent(), (button) -> {
                 SimpleMainMenuLibClient.onQuickJoinClick();
-            }).position(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
+            }).pos(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
 
             // Technically as of v2.0.0, this button can connect to things outside of multiplayer,
             // but since it's possible, still going to disable it.
@@ -98,35 +99,35 @@ public abstract class TitleScreenMixin extends Screen {
                 quickJoinButtonWidgetBuilder.tooltip(tooltip);
             }
 
-            ButtonWidget joinServerButtonWidget = quickJoinButtonWidgetBuilder.build();
+            Button joinServerButtonWidget = quickJoinButtonWidgetBuilder.build();
             joinServerButtonWidget.active = !isDisabled;
-            this.addDrawableChild(quickJoinButtonWidgetBuilder.build());
+            this.addRenderableWidget(quickJoinButtonWidgetBuilder.build());
         }
 
         if (SimpleMainMenuLibClient.isMultiplayerVisible()) {
-            ButtonWidget.Builder multiplayerButtonWidgetBuilder = ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
-                Screen screen = MinecraftClient.getInstance().options.skipMultiplayerWarning ? new MultiplayerScreen(self) : new MultiplayerWarningScreen(self);
-                MinecraftClient.getInstance().setScreen(screen);
-            }).position(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
+            Button.Builder multiplayerButtonWidgetBuilder = Button.builder(Component.translatable("menu.multiplayer"), button -> {
+                Screen screen = Minecraft.getInstance().options.skipMultiplayerWarning ? new JoinMultiplayerScreen(self) : new SafetyScreen(self);
+                Minecraft.getInstance().setScreen(screen);
+            }).pos(self.width / 2 - 100, y + (spacingY * buttonYMulti++)).size(200, 20);
 
             if (isDisabled)
                 multiplayerButtonWidgetBuilder.tooltip(tooltip);
 
-            ButtonWidget multiplayerButtonWidget = multiplayerButtonWidgetBuilder.build();
+            Button multiplayerButtonWidget = multiplayerButtonWidgetBuilder.build();
             multiplayerButtonWidget.active = !isDisabled;
 
-            this.addDrawableChild(multiplayerButtonWidget);
+            this.addRenderableWidget(multiplayerButtonWidget);
         }
 
         if (SimpleMainMenuLibClient.isModsVisible()) {
-            ButtonWidget.Builder modsButtonWidgetBuilder = ButtonWidget.builder(ModMenu.createModsButtonText(true), button -> {
-                Screen modsScreen = ModMenuApi.createModsScreen(MinecraftClient.getInstance().currentScreen);
-                MinecraftClient.getInstance().setScreen(modsScreen);
-            }).position(self.width / 2 + 104, y + spacingY).size(50, 20);
+            Button.Builder modsButtonWidgetBuilder = Button.builder(ModMenu.createModsButtonText(true), button -> {
+                Screen modsScreen = ModMenuApi.createModsScreen(Minecraft.getInstance().screen);
+                Minecraft.getInstance().setScreen(modsScreen);
+            }).pos(self.width / 2 + 104, y + spacingY).size(50, 20);
 
-            ButtonWidget modsButtonWidget = modsButtonWidgetBuilder.build();
+            Button modsButtonWidget = modsButtonWidgetBuilder.build();
 
-            this.addDrawableChild(modsButtonWidget);
+            this.addRenderableWidget(modsButtonWidget);
         }
 
         return y + (--buttonYMulti * spacingY);

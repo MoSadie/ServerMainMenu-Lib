@@ -1,16 +1,15 @@
 package com.mosadie.simplemainmenu.api;
 
 import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.NoticeScreen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.AlertScreen;
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.RandomSource;
 
 import java.time.LocalDate;
 
@@ -28,7 +27,7 @@ public class Util {
      * @return True if the theme should be selected, false otherwise. Usable in {@link MenuTheme#rollOdds}
      */
     public static boolean rollOddsMonthDay(int month, int day, int daysBefore, int daysAfter) {
-        Random random = Random.create();
+        RandomSource random = RandomSource.create();
 
         LocalDate now = LocalDate.now();
         LocalDate themeDate = LocalDate.of(now.getYear(), month, day);
@@ -52,10 +51,10 @@ public class Util {
         int roll;
 
         if (now.isBefore(themeDate)) {
-            roll = random.nextBetween(0, daysBefore);
+            roll = random.nextInt(0, daysBefore);
             return roll <= firstDate.until(now).getDays();
         } else {
-            roll = random.nextBetween(0, daysAfter);
+            roll = random.nextInt(0, daysAfter);
             return roll >= now.until(lastDate).getDays();
         }
     }
@@ -65,7 +64,7 @@ public class Util {
      * @return True if the theme should be selected, false otherwise. Usable in {@link MenuTheme#rollOdds()}
      */
     public static boolean rollOddsFlipCoin() {
-        Random random = Random.create();
+        RandomSource random = RandomSource.create();
 
         return random.nextBoolean();
     }
@@ -84,10 +83,10 @@ public class Util {
      * @param address Address of the server
      */
     public static void joinServer(String name, String address) {
-        if (ServerAddress.isValid(address)) {
-            ServerInfo serverInfo = new ServerInfo(name, address, ServerInfo.ServerType.OTHER);
-            serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
-            joinServer(serverInfo);
+        if (ServerAddress.isValidAddress(address)) {
+            ServerData serverData = new ServerData(name, address, ServerData.Type.OTHER);
+            serverData.setResourcePackStatus(ServerData.ServerPackStatus.ENABLED);
+            joinServer(serverData);
         }
     }
 
@@ -95,32 +94,32 @@ public class Util {
      * Directs Minecraft to connect to the specified server.
      * @param server The ServerInfo of the server to join.
      */
-    public static void joinServer(ServerInfo server) {
-        MinecraftClient.getInstance().send(() -> {
+    public static void joinServer(ServerData server) {
+        Minecraft.getInstance().execute(() -> {
             leaveIfNeeded();
 
-            SimpleMainMenuLibClient.LOGGER.info("Connecting to " + server.address);
+            SimpleMainMenuLibClient.LOGGER.info("Connecting to " + server.ip);
 
             // Connect to server
 
-            ConnectScreen.connect(new TitleScreen(), MinecraftClient.getInstance(), ServerAddress.parse(server.address), server, false, null);
+            ConnectScreen.startConnecting(new TitleScreen(), Minecraft.getInstance(), ServerAddress.parseString(server.ip), server, false, null);
         });
     }
 
     public static void loadWorld(String worldName) {
-        MinecraftClient.getInstance().send(() -> {
-            if (MinecraftClient.getInstance().getLevelStorage().levelExists(worldName)) {
+        Minecraft.getInstance().execute(() -> {
+            if (Minecraft.getInstance().getLevelSource().levelExists(worldName)) {
                 leaveIfNeeded();
 
                 SimpleMainMenuLibClient.LOGGER.info("Loading world...");
-                MinecraftClient.getInstance().createIntegratedServerLoader().start(worldName, () -> {
+                Minecraft.getInstance().createWorldOpenFlows().openWorld(worldName, () -> {
                     SimpleMainMenuLibClient.LOGGER.info("World load cancelled.");
-                    MinecraftClient.getInstance().setScreen(new TitleScreen());
+                    Minecraft.getInstance().setScreen(new TitleScreen());
                 });
             } else {
                 SimpleMainMenuLibClient.LOGGER.warn("World " + worldName + " does not exist!");
-                if (MinecraftClient.getInstance().world == null)
-                    MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> MinecraftClient.getInstance().setScreen(new TitleScreen()), Text.translatable("text.smm-lib.error.worldnotfound.title"), Text.translatable("text.smm-lib.error.worldnotfound.body", worldName), ScreenTexts.TO_TITLE, true));
+                if (Minecraft.getInstance().level == null)
+                    Minecraft.getInstance().setScreen(new AlertScreen(() -> Minecraft.getInstance().setScreen(new TitleScreen()), Component.translatable("text.smm-lib.error.worldnotfound.title"), Component.translatable("text.smm-lib.error.worldnotfound.body", worldName), Component.translatable("gui.toTitle"), true));
             }
         });
     }
@@ -129,11 +128,11 @@ public class Util {
      * Checks if in a world and leaves it.
      */
     private static void leaveIfNeeded() {
-        if (MinecraftClient.getInstance().world != null) {
+        if (Minecraft.getInstance().level != null) {
             SimpleMainMenuLibClient.LOGGER.info("Disconnecting from world...");
 
-            MinecraftClient.getInstance().world.disconnect(Text.translatable("menu.disconnect"));
-            MinecraftClient.getInstance().disconnectWithProgressScreen();
+            Minecraft.getInstance().level.disconnect(Component.translatable("menu.disconnect"));
+            Minecraft.getInstance().disconnectWithProgressScreen();
         }
     }
 

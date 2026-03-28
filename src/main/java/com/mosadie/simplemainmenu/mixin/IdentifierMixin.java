@@ -1,7 +1,7 @@
 package com.mosadie.simplemainmenu.mixin;
 
 import com.mosadie.simplemainmenu.client.SimpleMainMenuLibClient;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -14,12 +14,12 @@ public class IdentifierMixin {
      * @reason Trying to get the panorama ID to resolve to a custom one instead, am tied of running into so many rendering issues so time for hacky solutions. Added in v2.0.5 when updating to Minecraft 1.21.5 because I could not get the previous system of overwriting the panorama renderer completely to work.
      */
     @Overwrite
-    public static Identifier ofVanilla(String path) {
+    public static Identifier withDefaultNamespace(String path) {
         // If we are getting the background panorama texture, we want to return the custom panorama texture from the selected theme instead.
         if (path != null && path.equals("textures/gui/title/background/panorama")) {
             return SimpleMainMenuLibClient.getTheme().getPanorama();
         }
 
-        return Identifier.of("minecraft", path);
+        return Identifier.fromNamespaceAndPath("minecraft", path);
     }
 }
