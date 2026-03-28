@@ -47,7 +47,7 @@ public abstract class TitleScreenMixin extends Screen {
     @Inject(method = "init()V", at = @At("HEAD"))
     private void injectSplashText(CallbackInfo info) {
         if (splashText == null) {
-            Text[] splashes = ServerMainMenuLibClient.getSplashText();
+            Text[] splashes = SimpleMainMenuLibClient.getSplashText();
             // Still provide the first line or empty to avoid anything else that tries to use it crashing
             this.splashText = new SplashTextRenderer(splashes.length == 0 ? Text.of("") : splashes[0]);
             ((MultilineSplashTextRenderer) this.splashText).smm_lib$setMultilineText(splashes);

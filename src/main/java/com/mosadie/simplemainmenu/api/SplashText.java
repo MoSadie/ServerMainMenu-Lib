@@ -1,4 +1,4 @@
-package com.mosadie.servermainmenu.api;
+package com.mosadie.simplemainmenu.api;
 
 import net.minecraft.text.Text;
 

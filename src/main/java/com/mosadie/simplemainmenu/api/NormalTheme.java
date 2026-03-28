@@ -21,7 +21,7 @@ public class NormalTheme implements MenuTheme{
     public SplashText getSplashText() {
         return SplashText.builder()
                 .addLine("Just a normal menu...")
-                .addLine("yay!")
+                .addLine("for now!")
                 .build();
     }
 
