@@ -6,9 +6,10 @@
   "mixins": [
   ],
   "client": [
+    "IdentifierMixin",
+    "SplashTextRendererMixin",
     "TitleScreenInvoker",
-    "TitleScreenMixin",
-    "IdentifierMixin"
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -78,13 +78,12 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
 
     private static SimpleMainMenuLibConfig config;
 
-    @SuppressWarnings("deprecation")
-    public static Text getSplashText() {
+    public static Text[] getSplashText() {
         if (config != null && config.splashOptions.overrideSplash) {
-            return Text.of(config.splashOptions.overrideSplashText);
+            return new Text[] { Text.of(config.splashOptions.overrideSplashText) };
         }
-        
-        return getTheme().getSplashAsText();
+
+        return getTheme().getSplashText().lines();
     }
 
     public static Text getButtonText() {
