@@ -3,60 +3,60 @@ package com.mosadie.simplemainmenu.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mosadie.simplemainmenu.duck.MultilineSplashTextRenderer;
-import net.minecraft.client.font.Alignment;
-import net.minecraft.client.font.DrawnTextConsumer;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.SplashTextRenderer;
-import net.minecraft.text.StringVisitable;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.ActiveTextCollector;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.TextAlignment;
+import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(SplashTextRenderer.class)
+@Mixin(SplashRenderer.class)
 public abstract class SplashTextRendererMixin implements MultilineSplashTextRenderer {
     @Unique
-    private Text[] smm_lib$multilineText;
+    private Component[] smm_lib$multilineText;
 
     @WrapOperation(
-            method = "render",
+            method = "extractRenderState",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/font/TextRenderer;getWidth(Lnet/minecraft/text/StringVisitable;)I"
+                    target = "Lnet/minecraft/client/gui/Font;width(Lnet/minecraft/network/chat/FormattedText;)I"
             )
     )
-    private int smm_lib$getMultilineTextWidth(TextRenderer instance, StringVisitable text, Operation<Integer> original) {
+    private int smm_lib$getMultilineTextWidth(Font instance, FormattedText text, Operation<Integer> original) {
         if (smm_lib$multilineText == null) return original.call(instance, text);
 
         int result = 0;
-        for (Text line : smm_lib$multilineText) {
+        for (Component line : smm_lib$multilineText) {
             result = Math.max(original.call(instance, line), result);
         }
         return result;
     }
 
     @WrapOperation(
-            method = "render",
+            method = "extractRenderState",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/font/DrawnTextConsumer;text(Lnet/minecraft/client/font/Alignment;IILnet/minecraft/client/font/DrawnTextConsumer$Transformation;Lnet/minecraft/text/Text;)V"
+                    target = "Lnet/minecraft/client/gui/ActiveTextCollector;accept(Lnet/minecraft/client/gui/TextAlignment;IILnet/minecraft/client/gui/ActiveTextCollector$Parameters;Lnet/minecraft/network/chat/Component;)V"
             )
     )
-    private void smm_lib$renderMultilineText(DrawnTextConsumer instance, Alignment alignment, int x, int y, DrawnTextConsumer.Transformation transformation, Text text, Operation<Void> original) {
+    private void smm_lib$renderMultilineText(ActiveTextCollector instance, TextAlignment alignment, int x, int y, ActiveTextCollector.Parameters parameters, Component text, Operation<Void> original) {
         if (smm_lib$multilineText == null) {
-            original.call(instance, alignment, x, y, transformation, text);
+            original.call(instance, alignment, x, y, parameters, text);
             return;
         }
 
-        for (Text line : smm_lib$multilineText) {
+        for (Component line : smm_lib$multilineText) {
             // Use center alignment as then... idk I'd say it looks better
-            original.call(instance, Alignment.CENTER, 0, y, transformation, line);
+            original.call(instance, TextAlignment.CENTER, 0, y, parameters, line);
             y += 9;
         }
     }
 
     @Override
-    public void smm_lib$setMultilineText(Text[] multilineText) {
+    public void smm_lib$setMultilineText(Component[] multilineText) {
         this.smm_lib$multilineText = multilineText;
     }
 }

@@ -8,11 +8,11 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.InteractionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +21,8 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
 
     public static final String MOD_ID = "smm-lib";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    static RegistryKey<Registry<MenuTheme>> registryKey = RegistryKey.ofRegistry(Identifier.of(MOD_ID, "menu_theme"));
-    public static Registry<MenuTheme> registry = FabricRegistryBuilder.createSimple(registryKey)
+    static ResourceKey<Registry<MenuTheme>> registryKey = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "menu_theme"));
+    public static Registry<MenuTheme> registry = FabricRegistryBuilder.create(registryKey)
             .buildAndRegister();
 
     private static MenuTheme selectTheme() {
@@ -33,9 +33,9 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
         if (config != null && config.themeOptions.themeNamespace != null && config.themeOptions.themeId != null && config.themeOptions.overrideTheme) {
             LOGGER.info("Theme selected via override: " + config.themeOptions.themeNamespace + ":" + config.themeOptions.themeId);
 
-            Identifier id = Identifier.of(config.themeOptions.themeNamespace, config.themeOptions.themeId);
-            if (registry.containsId(id)) {
-                selectedTheme = registry.get(id);
+            Identifier id = Identifier.fromNamespaceAndPath(config.themeOptions.themeNamespace, config.themeOptions.themeId);
+            if (registry.containsKey(id)) {
+                selectedTheme = registry.getValue(id);
             }
             else {
                 LOGGER.info("Failed to get theme via override! Falling back to Normal.");
@@ -78,20 +78,20 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
 
     private static SimpleMainMenuLibConfig config;
 
-    public static Text[] getSplashText() {
+    public static Component[] getSplashText() {
         if (config != null && config.splashOptions.overrideSplash) {
-            return new Text[] { Text.of(config.splashOptions.overrideSplashText) };
+            return new Component[] { Component.literal(config.splashOptions.overrideSplashText).setStyle(Util.SPLASH_TEXT_STYLE) };
         }
 
         return getTheme().getSplashText().lines();
     }
 
-    public static Text getButtonText() {
+    public static Component getButtonComponent() {
         if (config != null && config.quickJoinButtonOptions.overrideQuickJoinButton) {
-            return Text.of(config.quickJoinButtonOptions.buttonTextOverride);
+            return Component.literal(config.quickJoinButtonOptions.buttonTextOverride);
         }
 
-        return getTheme().getQuickJoinButtonText();
+        return getTheme().getQuickJoinButtonComponent();
     }
 
     public static void onQuickJoinClick() {
@@ -150,16 +150,16 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
 
         config = AutoConfig.getConfigHolder(SimpleMainMenuLibConfig.class).getConfig();
 
-        LOGGER.info("SimpleServerMenu-Lib Initialized!");
+        LOGGER.info("SimpleMainMenu-Lib Initialized!");
     }
 
-    private static ActionResult onConfigSave(ConfigHolder<SimpleMainMenuLibConfig> simpleMainMenuLibConfigConfigHolder, SimpleMainMenuLibConfig simpleMainMenuLibConfig) {
+    private static InteractionResult onConfigSave(ConfigHolder<SimpleMainMenuLibConfig> simpleMainMenuLibConfigConfigHolder, SimpleMainMenuLibConfig simpleMainMenuLibConfig) {
         LOGGER.info("Updating config!");
 
         config = simpleMainMenuLibConfig;
 
         menuTheme = selectTheme();
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }
