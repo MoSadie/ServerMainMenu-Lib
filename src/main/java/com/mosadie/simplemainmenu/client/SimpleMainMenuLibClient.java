@@ -150,7 +150,7 @@ public class SimpleMainMenuLibClient implements ClientModInitializer {
 
         config = AutoConfig.getConfigHolder(SimpleMainMenuLibConfig.class).getConfig();
 
-        LOGGER.info("SimpleServerMenu-Lib Initialized!");
+        LOGGER.info("SimpleMainMenu-Lib Initialized!");
     }
 
     private static InteractionResult onConfigSave(ConfigHolder<SimpleMainMenuLibConfig> simpleMainMenuLibConfigConfigHolder, SimpleMainMenuLibConfig simpleMainMenuLibConfig) {
